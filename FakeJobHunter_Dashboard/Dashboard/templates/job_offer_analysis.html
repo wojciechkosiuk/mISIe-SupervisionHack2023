@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Offer Analysis</title>
+</head>
+<body>
+    <h1>First Page</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="link">Enter job offer link:</label>
+        <input type="url" name="link" id="link" required>
+        <br>
+        <label for="risk">Risk value (1-5):</label>
+        <input type="number" name="risk" id="risk" min="1" max="5" required>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    
+    <h2>Job Offer Information</h2>
+    <!-- {% if job_offer_info %}
+        {% if job_offer_info.is_fake %}
+            <p>FAKE</p>
+        {% else %}
+            <p>REAL</p>
+        {% endif %}
+        
+        <h3>Job Offer Plots</h3> -->
+        <!-- Display your generated plots here -->
+        <!-- {% for plot in job_offer_plots %}
+            {{ plot }}
+            <br>
+        {% endfor %}
+    {% endif %} -->
+</body>
+</html>
