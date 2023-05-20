@@ -3,8 +3,12 @@
 <head>
     <title>Job Offer Analysis</title>
 </head>
+<menu>
+    <a href="{% url 'Dashboard:job_offer_analysis' %}" class="btn btn-secondary">Job Offer Analysis</a>
+    <a href="{% url 'Dashboard:overall_analysis' %}" class="btn btn-secondary">Overall Analysis</a>
+</menu>
 <body>
-    <h1>First Page</h1>
+    <h1>Job Offer Analysis</h1>
     <form method="post">
         {% csrf_token %}
         <label for="link">Enter job offer link:</label>
