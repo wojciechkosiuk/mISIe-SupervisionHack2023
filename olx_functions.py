@@ -133,7 +133,9 @@ def replace_commas(x):
     return x.replace(',', '.')
 
 def convert_str_to_float(x):
-    return float(x)
+    if x!='':
+        return float(x)
+    return np.nan
 
 
 def get_info_about_job_olx(url):
@@ -275,7 +277,7 @@ def adjust_olx_df(df):
     try:
         df['pay_low'] = df['pay_low'].apply(replace_commas)
         df['pay_low'] = df['pay_low'].apply(convert_str_to_float)
-
+    
         df['pay_high'] = df['pay_high'].apply(replace_commas)
         df['pay_high'] = df['pay_high'].apply(convert_str_to_float)
     except:
