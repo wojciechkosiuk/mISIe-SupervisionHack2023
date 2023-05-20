@@ -13,29 +13,38 @@ def job_offer_analysis(request):
     if request.method == 'POST':
         link = request.POST['link']
         # Perform web scraping and job offer analysis
-        # Set the values for is_fake, risk_value, and other fields accordingly
-        text = "Sample text"
-        date = "2023-05-20"
-        author = "John Doe"
-        key_words = "sample, keywords"
-        semantic_value = 0.8
-        is_fake = True
+        # Retrieve the relevant information for the job offer from the analysis
         
         # Save the job offer information to the database
         job_offer = JobOffer(
             link=link,
-            text=text,
-            date=date,
-            author=author,
-            key_words=key_words,
-            semantic_value=semantic_value,
-            fakeFlag=is_fake
+            text='Sample text',
+            date='2023-05-20',
+            author='John Doe',
+            length=500,
+            uppercase_counter=10,
+            exclamation_mark_counter=3,
+            currency_mark_counter=1,
+            non_polish_counter=2,
+            emotional_words_counter=5,
+            possible_contact=True,
+            possible_mail=True,
+            categories='Software Development',
+            fake_probability=0.75
         )
         job_offer.save()
         
-        return redirect('overall_analysis')  # Redirect to the second page
+        # Retrieve the job offer information from the database
+        job_offer_info = JobOffer.objects.get(link=link)
+        
+        # Pass the job offer information to the template
+        context = {
+            'job_offer_info': job_offer_info,
+        }
+        return render(request, 'job_offer_analysis.html', context)
     
     return render(request, 'job_offer_analysis.html')
+
 
 def prepare_plot_data(job_offers):
     plot_data = []

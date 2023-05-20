@@ -35,5 +35,63 @@
             <br>
         {% endfor %}
     {% endif %} -->
+    {% if job_offer_info %}
+    <div class="box">
+        <h3>Link</h3>
+        <p>{{ job_offer_info.link }}</p>
+    </div>
+    <div class="box">
+        <h3>Text</h3>
+        <p>{{ job_offer_info.text }}</p>
+    </div>
+    <div class="box">
+        <h3>Date</h3>
+        <p>{{ job_offer_info.date }}</p>
+    </div>
+    <div class="box">
+        <h3>Author</h3>
+        <p>{{ job_offer_info.Author }}</p>
+    </div>
+    <div class="box">
+        <h3>Length</h3>
+        <p>{{ job_offer_info.length }}</p>
+    </div>
+    <div class="box">
+        <h3>Uppercase Counter</h3>
+        <p>{{ job_offer_info.uppercase_counter }}</p>
+    </div>
+    <div class="box">
+        <h3>Exclamation Mark Counter</h3>
+        <p>{{ job_offer_info.exclamation_mark_counter }}</p>
+    </div>
+    <div class="box">
+        <h3>Currency Mark Counter</h3>
+        <p>{{ job_offer_info.currency_mark_counter }}</p>
+    </div>
+    <div class="box">
+        <h3>Non Polish Counter</h3>
+        <p>{{ job_offer_info.non_polish_counter }}</p>
+    </div>
+    <div class="box">
+        <h3>Emotional Words Counter</h3>
+        <p>{{ job_offer_info.emotional_words_counter }}</p>
+    </div>
+    <div class="box">
+        <h3>Possible Contact</h3>
+        <p>{{ job_offer_info.possible_contact }}</p>
+    </div>
+    <div class="box">
+        <h3>Possible Mail</h3>
+        <p>{{ job_offer_info.possible_mail }}</p>
+    </div>
+    <div class="box">
+        <h3>Categories</h3>
+        <p>{{ job_offer_info.categories }}</p>
+    </div>
+    <div class="box">
+        <h3>Fake Probability</h3>
+        <p>{{ job_offer_info.fake_probability }}</p>
+    </div>
+{% endif %}
 </body>
 </html>
