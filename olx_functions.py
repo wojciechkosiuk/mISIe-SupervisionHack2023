@@ -145,7 +145,7 @@ def convert_str_to_float(x):
     return float(x)
 
 
-def get_info_about_job(url):
+def get_info_about_job_olx(url):
     soup = return_soup(url)
 
     dict_  = {
