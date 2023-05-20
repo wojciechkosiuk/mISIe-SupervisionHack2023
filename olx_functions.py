@@ -140,6 +140,7 @@ def get_info_about_job_olx(url):
     soup = return_soup(url)
 
     dict_  = {
+        'link' : url,
         'dodane-data' : '',
         'id' : '',
         'title' : '',
@@ -281,7 +282,7 @@ def adjust_olx_df(df):
         print('Error in converting pay_low and pay_high to float')
     
     # add olx to beginning of id
-    df['id'] = df['id'].apply(add_olx)
+    # df['id'] = df['id'].apply(add_olx)
     
     return df
 

@@ -46,25 +46,29 @@ itemprop = {
     "price" : "price",
 }
 
-dict_  = {
-    'dodane-data' : '',
-    'id' : '',
-    'title' : '',
-    'category-tree-item' : '',
-    'user-profile-link' : '',
-    'filters':'',
-    'description' : '',
-    'pay_low' : '',
-    'pay_high' : '',
-    'pay_currency' : '',
-    'pay_period' : '',
-    'Lokalizacja' : '',
-    "Wymiar pracy" : '',
-    "Typ umowy" : '',
-}
+
 
 def get_info_about_job_sprzedajemy(url):
     url = f"https://sprzedajemy.pl{url}"
+
+    dict_  = {
+        "link" : url,
+        'dodane-data' : '',
+        'id' : '',
+        'title' : '',
+        'category-tree-item' : '',
+        'user-profile-link' : '',
+        'filters':'',
+        'description' : '',
+        'pay_low' : '',
+        'pay_high' : '',
+        'pay_currency' : '',
+        'pay_period' : '',
+        'Lokalizacja' : '',
+        "Wymiar pracy" : '',
+        "Typ umowy" : '',
+    }
+
     soup = return_soup(url)
 
     for key, value in aas_.items():
@@ -164,7 +168,7 @@ def sprzedajemy_date(data):
     data = data.split(" ")
     data[1] = date_dict[data[1]]
     data[2] = str(datetime.datetime.now().year)
-    data = "-".join(data)
+    data = "-".join(reversed(data))
     return data
 
 
