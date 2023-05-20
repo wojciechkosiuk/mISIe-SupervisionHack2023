@@ -280,6 +280,9 @@ def adjust_olx_df(df):
     except:
         print('Error in converting pay_low and pay_high to float')
     
+    # add olx to beginning of id
+    df['id'] = df['id'].apply(add_olx)
+    
     return df
 
     

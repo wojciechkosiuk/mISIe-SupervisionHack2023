@@ -171,4 +171,6 @@ def sprzedajemy_date(data):
 def adjust_sprzedajemy_df(df):
     df["dodane-data"] = df["dodane-data"].apply(sprzedajemy_date)
     df["user-profile-link"] = df["user-profile-link"].apply(lambda x: f"https://sprzedajemy.pl{x}")
+    # add "sp" to beginning of id
+    df["id"] = df["id"].apply(lambda x: f"sp{x}")
     return df
