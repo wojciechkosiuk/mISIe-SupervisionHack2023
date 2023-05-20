@@ -87,48 +87,6 @@ lis = {
     'category-tree-item':'css-7dfllt'
 }
 
-def adjust_olx_df(df):
-
-    try:    # remove Dodane from dejtafrejm['dodane-data']
-        df['dodane-data'] = df['dodane-data'].apply(remove_dodane)
-    except:
-        pass
-    try: # convert dodane-data to datetime
-        df['dodane-data'] = df['dodane-data'].apply(convert_to_datetime)
-    except:
-        pass
-
-    try:# remove ID: from dejtafrejm['id']
-        df['id'] = df['id'].apply(remove_id)
-    except:
-        pass
-
-    try:# remove OPIS from beginning of description (only check first 4 symbols)
-        df['description'] = df['description'].apply(remove_opis)
-    except:
-        pass
-
-    try:
-        df['user-profile-link'] = df['user-profile-link'].apply(add_olx)
-    except:
-        pass
-
-    try:
-        df['user-profile-link-hash'] = df['user-profile-link'].apply(hash_url)
-    except:
-        pass
-
-    try:
-        df['pay_low'] = df['pay_low'].apply(replace_commas)
-        df['pay_low'] = df['pay_low'].apply(convert_str_to_float)
-
-        df['pay_high'] = df['pay_high'].apply(replace_commas)
-        df['pay_high'] = df['pay_high'].apply(convert_str_to_float)
-    except:
-        pass
-    
-    return df
-
 def return_soup(url):
     start = time.time()
     response = requests.get(url)
@@ -143,7 +101,7 @@ def return_soup(url):
 
 # function to remove Dodane from dodane-data
 def remove_dodane(x):
-    return x.replace('Dodane', '')
+    return x.replace('Dodane ', '')
 
 # function to convert dodane-data to datetime
 def convert_to_datetime(x):
@@ -168,6 +126,9 @@ def remove_opis(x):
 
 # add "https://www.olx.pl" to link unless it starts with "https://" or "http://"
 def add_olx(x):
+    # break if x is None
+    if x is None or x == "None" or x == "" or x == "NaN":
+        return x
     if x[:8] == 'https://' or x[:7] == 'http://':
         return x
     else:
@@ -287,6 +248,48 @@ def get_info_about_job(url):
     return dejtafrejm
  
 
+
+def adjust_olx_df(df):
+
+    try:    # remove Dodane from dejtafrejm['dodane-data']
+        df['dodane-data'] = df['dodane-data'].apply(remove_dodane)
+    except:
+        print('Error in removing Dodane from df["dodane-data"]')
+    try: # convert dodane-data to datetime
+        df['dodane-data'] = df['dodane-data'].apply(convert_to_datetime)
+    except:
+        print('Error in converting df["dodane-data"] to datetime')
+
+    try:# remove ID: from dejtafrejm['id']
+        df['id'] = df['id'].apply(remove_id)
+    except:
+        print('Error in removing ID: from df["id"]')
+
+    try:# remove OPIS from beginning of description (only check first 4 symbols)
+        df['description'] = df['description'].apply(remove_opis)
+    except:
+        print('Error in removing OPIS from df["description"]')
+
+    try:
+        df['user-profile-link'] = df['user-profile-link'].apply(add_olx)
+    except:
+        print('Error in adding olx.pl to df["user-profile-link"]')
+
+    try:
+        df['user-profile-link-hash'] = df['user-profile-link'].apply(hash_url)
+    except:
+        print('Error in hashing df["user-profile-link"]')
+
+    try:
+        df['pay_low'] = df['pay_low'].apply(replace_commas)
+        df['pay_low'] = df['pay_low'].apply(convert_str_to_float)
+
+        df['pay_high'] = df['pay_high'].apply(replace_commas)
+        df['pay_high'] = df['pay_high'].apply(convert_str_to_float)
+    except:
+        print('Error in converting pay_low and pay_high to float')
+    
+    return df
 
     
 
