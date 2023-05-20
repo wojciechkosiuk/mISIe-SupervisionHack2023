@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Overall Analysis</title>
+</head>
+<body>
+    <h1>Second Page</h1>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Display your generated plots here -->
+    {% for plot in plot_data %}
+        {{ plot }}
+        <br>
+    {% endfor %}
+    <div id="plot-div">
+        {{ plot_html|safe }}
+    </div>
+</body>
+</html>
