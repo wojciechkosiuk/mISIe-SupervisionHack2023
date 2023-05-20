@@ -5,6 +5,7 @@ from . import views
 app_name = 'Dashboard'
 
 urlpatterns = [
-    path('job-offer-analysis/', views.job_offer_analysis, name='joa'),
-    path('overall-analysis/', views.overall_analysis, name='oa'),
+    path('', views.job_offer_analysis, name='home'),
+    path('job_offer_analysis/', views.job_offer_analysis, name='job_offer_analysis'),
+    path('overall_analysis/', views.overall_analysis, name='overall_analysis'),
 ]
