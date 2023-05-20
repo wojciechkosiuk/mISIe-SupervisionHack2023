@@ -6,23 +6,28 @@
 </head>
 <link rel="stylesheet" href="{% static 'Dashboard/style.css' %}">
 <menu>
-    <span class="custom-logo">mISIe</span>
+    <div class="custom-logo-container">
+        <span class="custom-logo">mISIe</span>
+    </div>
     <br>
     <a href="{% url 'Dashboard:job_offer_analysis' %}" class="btn btn-secondary">Job Offer Analysis</a>
     <a href="{% url 'Dashboard:overall_analysis' %}" class="btn btn-secondary">Overall Analysis</a>
 </menu>
 <body>
     <h1>Job Offer Analysis</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="link">Enter job offer link:</label>
-        <input type="url" name="link" id="link" required>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="form-container">
+        <form method="post" class="submit-form">
+            {% csrf_token %}
+            <label for="link">Enter job offer link:</label>
+            <div class="input-container">
+                <input type="url" name="link" id="link" required>
+                <input type="submit" value="Submit" class="submit-button">
+            </div>
+        </form>
+    </div>
 
     {% if message %}
-        <p>{{ message }}</p>
+        <p class="message">{{ message }}</p>
     {% endif %}
     {% if not_required_pages %}
         <p>{{ not_required_pages }}</p>
@@ -41,7 +46,7 @@
         </form>
     {% endif %}
     
-    <h2>Job Offer Information</h2>
+    <h2>Information</h2>
     <!-- {% if job_offer_info %}
         {% if job_offer_info.is_fake %}
             <p>FAKE</p>
@@ -66,15 +71,19 @@
             <h3>Probability</h3>
             <p>{{ job_offer_info.prob }}</p>
         </div>
-        <div class="box">
+        <div class="box probability">
+            <h3>Risk Value</h3>
+            <p>{{ job_offer_info.risk_value }}</p>
+        </div>
+        <div class="box text">
             <h3>Link</h3>
             <p>{{ job_offer_info.link }}</p>
         </div>
-        <div class="box">
+        <div class="box text">
             <h3>Text</h3>
             <p>{{ job_offer_info.text }}</p>
         </div>
-        <div class="box">
+        <div class="box text">
             <h3>Author</h3>
             <p>{{ job_offer_info.author }}</p>
         </div>
@@ -137,10 +146,6 @@
         <div class="box">
             <h3>Possible Phone Numbers</h3>
             <p>{{ job_offer_info.possible_phone_numbers }}</p>
-        </div>
-        <div class="box">
-            <h3>Risk Value</h3>
-            <p>{{ job_offer_info.risk_value }}</p>
         </div>
         
     {% endif %}

@@ -6,7 +6,9 @@
 </head>
 <link rel="stylesheet" href="{% static 'Dashboard/style.css' %}">
 <menu>
-    <span class="custom-logo">mISIe</span>
+    <div class="custom-logo-container">
+        <span class="custom-logo">mISIe</span>
+    </div>
     <br>
     <a href="{% url 'Dashboard:job_offer_analysis' %}" class="btn btn-secondary">Job Offer Analysis</a>
     <a href="{% url 'Dashboard:overall_analysis' %}" class="btn btn-secondary">Overall Analysis</a>

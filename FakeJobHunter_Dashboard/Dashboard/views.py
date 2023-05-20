@@ -73,7 +73,8 @@ def job_offer_analysis(request):
                     job_offer_info = JobOffer.objects.get(link=link)
                     context = {
                         'message': 'This link is already in the database!',
-                        'job_offer_info': job_offer_info
+                        'job_offer_info': job_offer_info,
+                        'correct_link': True
                     }
 
                 # Perform web scraping and job offer analysis

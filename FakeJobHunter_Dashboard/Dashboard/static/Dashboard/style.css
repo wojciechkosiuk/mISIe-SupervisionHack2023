@@ -30,6 +30,20 @@ a {
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
 }
+.custom-logo {
+    font-size: 30px;
+    font-weight: bold;
+    color: #005eff;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 0 16px rgba(0, 0, 0, 0.2); */
+}
+/* .custom-logo-container {
+    width: 300px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+} */
 .box {
   border: 1px solid #ccc;
   padding: 10px;
@@ -38,7 +52,7 @@ a {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 10px;
 }
 
@@ -56,6 +70,38 @@ a {
   padding-bottom: 5px;
   border-bottom: 1px solid #ccc;
 }
+
+.box.text {
+    grid-column: span 3;
+    grid-row: span 2;
+}
+
+.submit-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.submit-button {
+    margin-left: 10px;
+}
+/* .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+} */
+
+.message {
+    color: rgb(213, 67, 67);
+    font-weight: bold;
+}
+
 h1, h2, h3, h4, h5, h6 {
     letter-spacing: 0;
     font-weight: normal;
@@ -67,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 
 }
 h1 {
-    font-size: 24px 
+    font-size: 30px 
 }
 h2 {
     font-size: 22px 
