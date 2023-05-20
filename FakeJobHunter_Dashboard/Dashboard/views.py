@@ -112,7 +112,7 @@ def prepare_plot_data(job_offers):
     for job_offer in job_offers:
         # Perform any necessary data processing
         # For demonstration purposes, let's assume we want to plot semantic values
-        plot_data.append(job_offer.uppercase_counter)
+        plot_data.append(job_offer.capital_words_count)
 
     return plot_data
 
