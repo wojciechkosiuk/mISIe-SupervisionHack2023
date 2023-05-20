@@ -21,6 +21,10 @@
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
+    {% if not_required_pages %}
+        <p>{{ not_required_pages }}</p>
+    {% endif %}
+
     
     {% if correct_link %}
         <h2>Risk Value</h2>

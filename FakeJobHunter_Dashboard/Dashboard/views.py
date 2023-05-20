@@ -54,50 +54,57 @@ def job_offer_analysis(request):
         else:
             # Link form submitted
             link = request.POST['link']
-            job_offer = JobOffer.objects.filter(link=link).first()
-            if job_offer:
-                # Row with the same link already exists
-                job_offer_info = JobOffer.objects.get(link=link)
-                context = {
-                    'message': 'This link is already in the database!',
-                    'job_offer_info': job_offer_info
-                }
+            if 'olx' in link or 'sprzedajemy' in link:
+                job_offer = JobOffer.objects.filter(link=link).first()
+                if job_offer:
+                    # Row with the same link already exists
+                    job_offer_info = JobOffer.objects.get(link=link)
+                    context = {
+                        'message': 'This link is already in the database!',
+                        'job_offer_info': job_offer_info
+                    }
 
-            # Perform web scraping and job offer analysis
-            # Retrieve the relevant information for the job offer from the analysis
+                # Perform web scraping and job offer analysis
+                # Retrieve the relevant information for the job offer from the analysis
 
-            #Save the job offer information to the database
+                #Save the job offer information to the database
+                else:
+                    job_offer = JobOffer(
+                        link=link,
+                        text='Sample text',
+                        date='2023-05-20',
+                        author='John Doe',
+                        length=500,
+                        uppercase_counter=10,
+                        exclamation_mark_counter=3,
+                        currency_mark_counter=1,
+                        non_polish_counter=2,
+                        emotional_words_counter=5,
+                        possible_contact=True,
+                        possible_mail=True,
+                        categories='Software Development',
+                        fake_probability=0.75,
+                        risk_value=None
+                    )
+                    job_offer.save()
+
+                    # Retrieve the job offer information from the database
+                    job_offer_info = JobOffer.objects.get(link=link)
+
+                    # Pass the job offer information to the template
+                    context = {
+                        'job_offer_info': job_offer_info,
+                        'correct_link': True
+                    }
+                return render(request, 'job_offer_analysis.html', context)
+            
             else:
-                job_offer = JobOffer(
-                    link=link,
-                    text='Sample text',
-                    date='2023-05-20',
-                    author='John Doe',
-                    length=500,
-                    uppercase_counter=10,
-                    exclamation_mark_counter=3,
-                    currency_mark_counter=1,
-                    non_polish_counter=2,
-                    emotional_words_counter=5,
-                    possible_contact=True,
-                    possible_mail=True,
-                    categories='Software Development',
-                    fake_probability=0.75,
-                    risk_value=None
-                )
-                job_offer.save()
 
-                # Retrieve the job offer information from the database
-                job_offer_info = JobOffer.objects.get(link=link)
-
-                # Pass the job offer information to the template
                 context = {
-                    'job_offer_info': job_offer_info,
-                    'correct_link': True
+                    'not_required_pages': 'olx or sprzedajemy domain required!'
                 }
-            return render(request, 'job_offer_analysis.html', context)
 
-    return render(request, 'job_offer_analysis.html')
+    return render(request, 'job_offer_analysis.html',context)
 
 
 
