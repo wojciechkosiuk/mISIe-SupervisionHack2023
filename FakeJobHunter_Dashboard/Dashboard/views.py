@@ -8,34 +8,103 @@ from django.http import HttpResponse
 import base64
 import plotly.graph_objects as go
 from django.shortcuts import render
+import random
+import string
+
+
+def create_random(link):
+    job_offer = JobOffer(
+        link=link,
+        text = ''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        author = ''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        tfidf_sum=random.uniform(0, 1),
+        tfidf_mean=random.uniform(0, 1),
+        emotions_sum=random.randint(0, 100),
+        emotions_mean=random.uniform(0, 1),
+        text_length=random.randint(0, 1000),
+        capital_letters_count=random.randint(0, 100),
+        numbers_count=random.randint(0, 100),
+        question_marks_count=random.randint(0, 10),
+        currency_signs_count=random.randint(0, 10),
+        capital_words_count=random.randint(0, 100),
+        non_polish_char_count=random.randint(0, 100),
+        keywords_counter=random.randint(0, 100),
+        ispossible_address=random.choice([True, False]),
+        ispossible_email=random.choice([True, False]),
+        ispossible_phone_numbers=random.choice([True, False]),
+        possible_address=''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        possible_email=''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        possible_phone_numbers=''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        label = random.randint(0, 100),
+        prob = random.uniform(0, 1),
+        risk_value = random.randint(1, 5)
+    )
+    return job_offer
 
 def job_offer_analysis(request):
     if request.method == 'POST':
-        link = request.POST['link']
-        # Perform web scraping and job offer analysis
-        # Set the values for is_fake, risk_value, and other fields accordingly
-        text = "Sample text"
-        date = "2023-05-20"
-        author = "John Doe"
-        key_words = "sample, keywords"
-        semantic_value = 0.8
-        is_fake = True
-        
-        # Save the job offer information to the database
-        job_offer = JobOffer(
-            link=link,
-            text=text,
-            date=date,
-            author=author,
-            key_words=key_words,
-            semantic_value=semantic_value,
-            fakeFlag=is_fake
-        )
-        job_offer.save()
-        
-        return redirect('overall_analysis')  # Redirect to the second page
+
+        if 'risk' in request.POST:
+
+            # Risk Value form submitted
+            risk_value = request.POST['risk']
+            link = request.POST['link']
+
+
+            job_offer = JobOffer.objects.get(link=link)
+            job_offer.risk_value = risk_value
+            job_offer.save()
+            context = {
+                'job_offer_info': job_offer,
+            }
+            return render(request, 'job_offer_analysis.html', context)
+
+        else:
+            # Link form submitted
+            link = request.POST['link']
+
+            if 'olx' in link or 'sprzedajemy' in link:
+
+                # TU WEB SCRAPING Z ZAPISEM DO SYSTEMU
+
+                job_offer = JobOffer.objects.filter(link=link).first()
+                if job_offer:
+                    # Row with the same link already exists
+                    job_offer_info = JobOffer.objects.get(link=link)
+                    context = {
+                        'message': 'This link is already in the database!',
+                        'job_offer_info': job_offer_info,
+                        'correct_link': True
+                    }
+
+                # Perform web scraping and job offer analysis
+                # Retrieve the relevant information for the job offer from the analysis
+
+                #Save the job offer information to the database
+                else:
+                    job_offer = create_random(link=link)
+                    job_offer.save()
+                    # Retrieve the job offer information from the database
+                    job_offer_info = JobOffer.objects.get(link=link)
+
+                    # Pass the job offer information to the template
+                    context = {
+                        'job_offer_info': job_offer_info,
+                        'correct_link': True
+                    }
+                return render(request, 'job_offer_analysis.html', context)
+            
+            else:
+
+                context = {
+                    'not_required_pages': 'olx or sprzedajemy domain required!'
+                }
+
+        return render(request, 'job_offer_analysis.html',context)
     
     return render(request, 'job_offer_analysis.html')
+
+
 
 def prepare_plot_data(job_offers):
     plot_data = []
@@ -44,7 +113,7 @@ def prepare_plot_data(job_offers):
     for job_offer in job_offers:
         # Perform any necessary data processing
         # For demonstration purposes, let's assume we want to plot semantic values
-        plot_data.append(job_offer.semantic_value)
+        plot_data.append(job_offer.capital_words_count)
 
     return plot_data
 
@@ -58,8 +127,8 @@ def overall_analysis(request):
     fig = go.Figure(data=go.Scatter(x=list(range(len(plot_data))), y=plot_data))
     fig.update_layout(
         xaxis_title='Job Offer Index',
-        yaxis_title='Semantic Value',
-        title='Semantic Value Trend'
+        yaxis_title='Uppercase Counter Value',
+        title='Uppercase Counter Value Trend'
     )
 
     # Convert the Plotly figure to HTML

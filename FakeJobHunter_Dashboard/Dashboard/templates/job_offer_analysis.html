@@ -1,22 +1,52 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Job Offer Analysis</title>
 </head>
+<link rel="stylesheet" href="{% static 'Dashboard/style.css' %}">
+<menu>
+    <div class="custom-logo-container">
+        <span class="custom-logo">mISIe</span>
+    </div>
+    <br>
+    <a href="{% url 'Dashboard:job_offer_analysis' %}" class="btn btn-secondary">Job Offer Analysis</a>
+    <a href="{% url 'Dashboard:overall_analysis' %}" class="btn btn-secondary">Overall Analysis</a>
+</menu>
 <body>
-    <h1>First Page</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="link">Enter job offer link:</label>
-        <input type="url" name="link" id="link" required>
-        <br>
-        <label for="risk">Risk value (1-5):</label>
-        <input type="number" name="risk" id="risk" min="1" max="5" required>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
+    <h1>Job Offer Analysis</h1>
+    <div class="form-container">
+        <form method="post" class="submit-form">
+            {% csrf_token %}
+            <label for="link">Enter job offer link:</label>
+            <div class="input-container">
+                <input type="url" name="link" id="link" required>
+                <input type="submit" value="Submit" class="submit-button">
+            </div>
+        </form>
+    </div>
+
+    {% if message %}
+        <p class="message">{{ message }}</p>
+    {% endif %}
+    {% if not_required_pages %}
+        <p>{{ not_required_pages }}</p>
+    {% endif %}
+
     
-    <h2>Job Offer Information</h2>
+    {% if correct_link %}
+        <h2>Risk Value</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="link" value="{{ job_offer_info.link }}">
+            <label for="risk">Risk value (1-5):</label>
+            <input type="number" name="risk" id="risk" min="1" max="5" required>
+            <br>
+            <input type="submit" value="Submit Risk Value">
+        </form>
+    {% endif %}
+    
+    <h2>Information</h2>
     <!-- {% if job_offer_info %}
         {% if job_offer_info.is_fake %}
             <p>FAKE</p>
@@ -31,5 +61,94 @@
             <br>
         {% endfor %}
     {% endif %} -->
+    <div class="container">
+        {% if job_offer_info %}
+        <div class="box label">
+            <h3>Predicition</h3>
+            <p>{{ job_offer_info.prob }}</p>
+        </div>
+        <div class="box probability">
+            <h3>Probability</h3>
+            <p>{{ job_offer_info.prob }}</p>
+        </div>
+        <div class="box probability">
+            <h3>Risk Value</h3>
+            <p>{{ job_offer_info.risk_value }}</p>
+        </div>
+        <div class="box text">
+            <h3>Link</h3>
+            <p>{{ job_offer_info.link }}</p>
+        </div>
+        <div class="box text">
+            <h3>Text</h3>
+            <p>{{ job_offer_info.text }}</p>
+        </div>
+        <div class="box text">
+            <h3>Author</h3>
+            <p>{{ job_offer_info.author }}</p>
+        </div>
+        <div class="box">
+            <h3>TF-IDF Sum</h3>
+            <p>{{ job_offer_info.tfidf_sum }}</p>
+        </div>
+        <div class="box">
+            <h3>TF-IDF Mean</h3>
+            <p>{{ job_offer_info.tfidf_mean }}</p>
+        </div>
+        <div class="box">
+            <h3>Emotions Sum</h3>
+            <p>{{ job_offer_info.emotions_sum }}</p>
+        </div>
+        <div class="box">
+            <h3>Emotions Mean</h3>
+            <p>{{ job_offer_info.emotions_mean }}</p>
+        </div>
+        <div class="box">
+            <h3>Text Length</h3>
+            <p>{{ job_offer_info.text_length }}</p>
+        </div>
+        <div class="box">
+            <h3>Capital Letters Count</h3>
+            <p>{{ job_offer_info.capital_letters_count }}</p>
+        </div>
+        <div class="box">
+            <h3>Numbers Count</h3>
+            <p>{{ job_offer_info.numbers_count }}</p>
+        </div>
+        <div class="box">
+            <h3>Question Marks Count</h3>
+            <p>{{ job_offer_info.question_marks_count }}</p>
+        </div>
+        <div class="box">
+            <h3>Currency Signs Count</h3>
+            <p>{{ job_offer_info.currency_signs_count }}</p>
+        </div>
+        <div class="box">
+            <h3>Capital Words Count</h3>
+            <p>{{ job_offer_info.capital_words_count }}</p>
+        </div>
+        <div class="box">
+            <h3>Non Polish Character Count</h3>
+            <p>{{ job_offer_info.non_polish_char_count }}</p>
+        </div>
+        <div class="box">
+            <h3>Keywords Counter</h3>
+            <p>{{ job_offer_info.keywords_counter }}</p>
+        </div>
+        <div class="box">
+            <h3>Possible Address</h3>
+            <p>{{ job_offer_info.possible_address }}</p>
+        </div>
+        <div class="box">
+            <h3>Possible Email</h3>
+            <p>{{ job_offer_info.possible_email }}</p>
+        </div>
+        <div class="box">
+            <h3>Possible Phone Numbers</h3>
+            <p>{{ job_offer_info.possible_phone_numbers }}</p>
+        </div>
+        
+    {% endif %}
+    </div>
 </body>
 </html>
