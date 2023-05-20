@@ -16,3 +16,4 @@ class JobOffer(models.Model):
     possible_mail = models.CharField(max_length=255)
     categories = models.CharField(max_length=255)
     fake_probability = models.FloatField()
+    risk_value = models.IntegerField(null=True, blank=True)
