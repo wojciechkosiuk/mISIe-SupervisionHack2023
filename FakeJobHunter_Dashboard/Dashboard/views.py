@@ -8,6 +8,38 @@ from django.http import HttpResponse
 import base64
 import plotly.graph_objects as go
 from django.shortcuts import render
+import random
+import string
+
+
+def create_random(link):
+    job_offer = JobOffer(
+        link=link,
+        text = ''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        author = ''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        tfidf_sum=random.uniform(0, 1),
+        tfidf_mean=random.uniform(0, 1),
+        emotions_sum=random.randint(0, 100),
+        emotions_mean=random.uniform(0, 1),
+        text_length=random.randint(0, 1000),
+        capital_letters_count=random.randint(0, 100),
+        numbers_count=random.randint(0, 100),
+        question_marks_count=random.randint(0, 10),
+        currency_signs_count=random.randint(0, 10),
+        capital_words_count=random.randint(0, 100),
+        non_polish_char_count=random.randint(0, 100),
+        keywords_counter=random.randint(0, 100),
+        ispossible_address=random.choice([True, False]),
+        ispossible_email=random.choice([True, False]),
+        ispossible_phone_numbers=random.choice([True, False]),
+        possible_address=''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        possible_email=''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        possible_phone_numbers=''.join(random.choices(string.ascii_letters + string.digits, k=5)),
+        label = random.randint(0, 100),
+        prob = random.uniform(0, 1),
+        risk_value = random.randint(1, 5)
+    )
+    return job_offer
 
 def job_offer_analysis(request):
     if request.method == 'POST':
@@ -18,31 +50,7 @@ def job_offer_analysis(request):
             risk_value = request.POST['risk']
             link = request.POST['link']
 
-            # job_offer = JobOffer(
-            #     link=link,
-            #     text='Sample text',
-            #     date='2023-05-20',
-            #     author='John Doe',
-            #     length=500,
-            #     uppercase_counter=10,
-            #     exclamation_mark_counter=3,
-            #     currency_mark_counter=1,
-            #     non_polish_counter=2,
-            #     emotional_words_counter=5,
-            #     possible_contact=True,
-            #     possible_mail=True,
-            #     categories='Software Development',
-            #     fake_probability=0.75,
-            #     risk_value=risk_value
-            # )
-            # job_offer.save()
-            # Retrieve the job offer information from the database
-            #job_offer_info = JobOffer.objects.get(link=link)
 
-            # Update the job offer object with the risk value
-            #job_offer_info = JobOffer.objects.get(link=link)
-
-            # Pass the job offer information to the template
             job_offer = JobOffer.objects.get(link=link)
             job_offer.risk_value = risk_value
             job_offer.save()
@@ -54,7 +62,11 @@ def job_offer_analysis(request):
         else:
             # Link form submitted
             link = request.POST['link']
+
             if 'olx' in link or 'sprzedajemy' in link:
+
+                # TU WEB SCRAPING Z ZAPISEM DO SYSTEMU
+
                 job_offer = JobOffer.objects.filter(link=link).first()
                 if job_offer:
                     # Row with the same link already exists
@@ -69,25 +81,8 @@ def job_offer_analysis(request):
 
                 #Save the job offer information to the database
                 else:
-                    job_offer = JobOffer(
-                        link=link,
-                        text='Sample text',
-                        date='2023-05-20',
-                        author='John Doe',
-                        length=500,
-                        uppercase_counter=10,
-                        exclamation_mark_counter=3,
-                        currency_mark_counter=1,
-                        non_polish_counter=2,
-                        emotional_words_counter=5,
-                        possible_contact=True,
-                        possible_mail=True,
-                        categories='Software Development',
-                        fake_probability=0.75,
-                        risk_value=None
-                    )
+                    job_offer = create_random(link=link)
                     job_offer.save()
-
                     # Retrieve the job offer information from the database
                     job_offer_info = JobOffer.objects.get(link=link)
 
@@ -104,7 +99,9 @@ def job_offer_analysis(request):
                     'not_required_pages': 'olx or sprzedajemy domain required!'
                 }
 
-    return render(request, 'job_offer_analysis.html',context)
+        return render(request, 'job_offer_analysis.html',context)
+    
+    return render(request, 'job_offer_analysis.html')
 
 
 

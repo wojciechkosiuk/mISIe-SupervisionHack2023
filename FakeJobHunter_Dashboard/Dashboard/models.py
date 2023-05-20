@@ -1,4 +1,6 @@
 from django.db import models
+import random
+import string
 
 # Define JobOffer model
 # class JobOffer(models.Model):
@@ -23,7 +25,6 @@ class JobOffer(models.Model):
     link = models.URLField()
     text = models.TextField()
     author = models.CharField(max_length=500)
-    length = models.IntegerField()
     tfidf_sum = models.FloatField()
     tfidf_mean = models.FloatField()
     emotions_sum = models.IntegerField()
@@ -39,3 +40,9 @@ class JobOffer(models.Model):
     ispossible_address = models.BooleanField()
     ispossible_email = models.BooleanField()
     ispossible_phone_numbers = models.BooleanField()
+    possible_address = models.CharField(max_length=200)
+    possible_email = models.CharField(max_length=200)
+    possible_phone_numbers = models.CharField(max_length=200)
+    label = models.IntegerField()
+    prob = models.FloatField()
+    risk_value = models.IntegerField(null=True, blank=True)
