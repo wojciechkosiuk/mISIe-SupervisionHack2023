@@ -4,6 +4,7 @@ import time
 import datetime
 import pandas as pd
 import numpy as np
+from scrape_functions import *
 
 
 categories = {"administracja-biurowa",
@@ -87,17 +88,7 @@ lis = {
     'category-tree-item':'css-7dfllt'
 }
 
-def return_soup(url):
-    start = time.time()
-    response = requests.get(url)
-    end = time.time()
-    html_content = response.content
-    print(f"czas requesta: {end - start}")
-    print("")
 
-    # Create a BeautifulSoup object
-    soup = BeautifulSoup(html_content, 'html.parser')
-    return soup
 
 # function to remove Dodane from dodane-data
 def remove_dodane(x):
@@ -289,18 +280,17 @@ def adjust_olx_df(df):
     except:
         print('Error in converting pay_low and pay_high to float')
     
+    # add olx to beginning of id
+    df['id'] = df['id'].apply(add_olx)
+    
     return df
 
     
 
 
 
-# ask user if he wants to get links
-choice = input("Do you want to get links? (y/n): ")
-if choice == 'n':
-    pass
-elif choice == 'y':
 
+def scrape_olx_links():
     links = []
 
     for i in range(1, 26):
