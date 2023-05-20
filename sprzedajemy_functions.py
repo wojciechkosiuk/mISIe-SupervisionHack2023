@@ -7,6 +7,8 @@ import numpy as np
 from scrape_functions import *
 
 
+
+
 def scrape_sprzedajemy_links():
     #eta 35min
     keep_working = True
