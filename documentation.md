@@ -17,14 +17,40 @@ Do scrapingu posługiwaliśmy się w dużej mierze tagami z CSS. Podobny scrapin
 ### Oferty
 Udało nam się znaleźć ponad 28 tysięcy linków do unikalnych ofert prac z portalu *olx* i ponad 5 tysięcy linków do ofert na portalu *sprzedajemy*. Łącznie mamy więc około 32-33 tys. linków.
 
+
+#### Dane z linkami
 Linki przechowujemy w folderze data odpowiednio w plikach:
-    - *links_olx.txt*
-    - *links_sprzedajemy.txt*
-przy czym do obu  
 
-Udało nam się znaleźć 
+- *links_olx.txt*
+- *links_sprzedajemy.txt*
 
-Dla obu stron wykonaliśmy ramki danych 
+  przy czym przy obu trzeba dokleić ich domenowe prefixy.
+
+#### Dane ze webscrapingu
+
+Przykładowe dane otrzymane z webscrapingu z obu stron znajdują się odpowiednio w plikach:
+
+- *olx_1000.csv*
+- *sprzedajemy_1000.csv*
+
+
+#### Opis kolumn:
+
+- link - pełny URL do oferty pracy
+- dodane-data - data dodania oferty na serwis (format YYYY-mm-dd)
+- title - tytuł oferty
+- category-tree-item - kategorie poodzielane "/"
+- user-profile-link - pełny URL do profilu użytkownika wystawiającego ofertę 
+- filters - w olx - filtry przy wyszukiwaniu, w sprzedajemy nie ma odpowiednika
+- description - pełny opis oferty
+- pay_low - jeśli na stronie zarobki są w podane jako przedział to jest to dolna granica, jeśli jest podana konkretna wartość to przyjmuje ją
+- pay_high - jeśli na stronie zarobki są w podane jako przedział to jest to górna granica, jeśli jest podana konkretna wartość to przyjmuje ją
+- pay_currency - waluta w jakiej podane są zarobki
+- pay_period - typ płacanie (np. godz. brutto, albo mies. brutto)
+- Lokalizacja - lokalizacja pracy
+- Wymiar pracy - wymiar pracy (pełen etat, pół etatu itd.)
+- Typ umowy - np. umowa o pracę
+- user-profile-link-hash - jest w pliku *olx_1000.csv*, ale ogólnie nigdzie nie jest używany. Nie usunęliśmy tej kolumny, bo już w kolejnych plikach usuwamy ją w kodzie.
 
 ### *scraping_functions.py*
 Dokumentacja funkcji:
@@ -50,7 +76,7 @@ Dokumentacja funkcji:
 - argumenty:
     - `url` (str) - adres URL strony z ofertą pracy na OLX.
 - zwracane:
-    - `pandas.DataFrame` - Ramka danych zawierająca informacje o ofercie pracy. 
+    - `pandas.DataFrame` - Ramka danych zawierająca informacje o ofercie pracy z processingiem. 
 
 
 
