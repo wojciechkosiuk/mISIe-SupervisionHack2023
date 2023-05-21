@@ -1,5 +1,6 @@
 Main README for mISIe-SupervisionHack2k23
-
+___
+IF YOU'RE TRYING TO MAKE THE APP WORK YOU CD TO FakeJobHunter_Dashboard DIRECTORY AND RUN THE SERVER FROM THERE.
 
 
 Pipeline bag_of_words:
