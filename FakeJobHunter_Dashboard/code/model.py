@@ -28,7 +28,7 @@ def predict_and_get_cols(ROW, isolation_forest_path='model/iso_model.pkl'):
            'filters', 'pay_low', 'pay_high', 'pay_currency', 'pay_period',
            'Lokalizacja', 'Wymiar pracy', 'Typ umowy','user-profile-link-hash'])
     #predict
-    print(row_small.columns)
+    #print(row_small.columns)
     iso_forest_pred = iso_forest.predict(row_small)
 
     #dodanie kolumny predict
@@ -38,9 +38,16 @@ def predict_and_get_cols(ROW, isolation_forest_path='model/iso_model.pkl'):
     #dodanie explain
     exp = shap.TreeExplainer(iso_forest)
     shap_values1 = exp.shap_values(row_small.iloc[0,:])
-
-    ROW['Predict_Prob'] = np.mean(shap_values1)
-
+    pr = np.mean(shap_values1)
+    if pr <0.18:
+        pr = (abs(pr-0.18))
+    else:
+        pr = 0
+        
+    if pr>1:
+        pr=1
+    ROW['Predict_Prob'] = pr
+    
     cols = np.where(shap_values1<0)
     string = 'Odstaje od danych bo: '
     for col in cols:
