@@ -1,8 +1,10 @@
 
 Spis treści:
- -web scraping (informacje, co uzyskujemy)
- -model (dlaczego taki, jak działa, wyjaśnienia)
+ 
+ -web scraping 
+ -model 
  -strona użytkownika - django
+
 
 ## Web scraping
 Szukaliśmy danych dotyczących ogłoszeń o pracę na dwóch portalach:
