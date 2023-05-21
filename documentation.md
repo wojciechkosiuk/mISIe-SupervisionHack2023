@@ -1,4 +1,8 @@
 
+## Spis treści:
+-web scraping (informacje, co uzyskujemy)
+-model (dlaczego taki, jak działa, wyjaśnienia)
+-strona użytkownika - django
 
 ## Web scraping
 Szukaliśmy danych dotyczących ogłoszeń o pracę na dwóch portalach:
@@ -61,7 +65,7 @@ Dokumentacja funkcji:
 - zwraca:
     - `BeautifulSoup`: Obiekt BeautifulSoup zawierający sparsowaną zawartość HTML.
 
-`save_url_to_html(url, filename)` służy do zapisania zawartości HTML strony internetowej do pliku o rozszerzeniu html. Plik można nastpępnie otworzyć w przeglądarce w takiej samej formie w jakiej został pobrany.
+`save_url_to_html(url, filename)` służy do zapisania zawartości HTML strony internetowej do pliku o rozszerzeniu html. Plik można następnie otworzyć w przeglądarce w takiej samej formie w jakiej został pobrany. Po uzyskaniu listy użytkowników u których model wykrył fałszywe ogłoszenie za pomocą tej funkcji zapisujemy **dowody**, czyli plik html profilu użytkownika. Są one w  /FakeJobHunter_Dashboard/suspicious_users
 
 - argumenty:
     - `url (str)`: Adres URL strony do zapisania.
@@ -103,8 +107,33 @@ Towarzyszą jej funkcje pomocnicze:
 Ogólnie podobne funkcje jak w przypadku OLX. Jest też podobne nazewnictwo. Do uzupełnienia.....
 
 
+## Tworzenie modelu
+Do stworzenia modelu użyliśmy plików:
+ - Create_dictionary.ipynb
+ - bag_of_words.ipynb
+ - model_research.ipynb
+ - Models.ipynb
+
+### Create_dictionary.ipynb
+Korzystając ze słownika ogólnie dostępnego (nawet dla commercial use) Słowosieci w wersji 4.2 tworzymy własne mapowanie słów do wskaźnika emocjonalnego wydźwięku i zapisujemy
+
+### bag_of_words.ipynb
+Plik bag of words do eksploracji (TODO Wojtek)
+
+### model_research.ipynb
+Analiza tekstu i tworzenie nowych kolum (TODO Wojtek)
+
+między innymi:
+- budowanie metryki do określenia emocjonalnego zbarwienia ogłoszenia, 
+- uzyskiwanie kolumn potencjalny number telefonu, adres mailowy, adres fizyczny z tekstu
+- wyszukiwanie słów z danego tematu
+- kolumny określające stylistyczny i fizyczny format tekstu
 
 
+
+### Models.ipynb
+**WYJAŚNIENIE PODEJŚCIA** - Zastosowaliśmy Anomaly Detection, model Isolation Forest po tuningu parametrów. Używamy takiego podejścia, ponieważ jest skuteczny w podejściach fraud detection. Z powodu braku datasetu z labelami uczenie przeprowadziliśmy w taki sposób. Dane tekstowe od organizatorów miały informacje czy są fałszywe czy nie, więc dołączyliśmy je do wyscrappowanych przez nas danych. Mogliśmy tak zrobić, ponieważ używamy tylko tekstu ogłoszenia do tworzenia kolumn do modelu. Trenowaliśmy Isolation Forest ustawiając  
+Trenujemy model, zapisujemy go, tworzymy finalne csv z wyscrappowanych danych do zapisu - gotowe do robienia z nich raportów oraz otrzymujemy listę użytkowników z potencjalnymi fałszywymi ogłoszeniami.
 
     
 
