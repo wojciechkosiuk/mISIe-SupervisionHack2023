@@ -118,12 +118,9 @@ Do stworzenia modelu użyliśmy plików:
 Korzystając ze słownika ogólnie dostępnego (nawet dla commercial use) Słowosieci w wersji 4.2 tworzymy własne mapowanie słów do wskaźnika emocjonalnego wydźwięku i zapisujemy
 
 ### bag_of_words.ipynb
-Plik bag of words do eksploracji (TODO Wojtek)
-
-### model_research.ipynb
-Analiza tekstu i tworzenie nowych kolum (TODO Wojtek)
-
-między innymi:
+Nasz preprocessing danych polegał głównie na wyszukiwaniu kluczowych informacji z tekstu, ale także na analizie NLP danego tekstu
+Word Tokenization -> Stemming -> TF-IDF (Term Frequency-Inverse Document Frequency) to metoda stosowana w analizie tekstu, która mierzy ważność słów w dokumencie w kontekście całej kolekcji dokumentów. Przyznaje ona wyższe wagi słowom, które występują często w danym dokumencie, ale rzadziej w innych dokumentach, co pozwala identyfikować istotne słowa charakterystyczne dla danego tekstu. Analiza tekstu i tworzenie nowych kolum.
+Między innymi:
 - budowanie metryki do określenia emocjonalnego zbarwienia ogłoszenia, 
 - uzyskiwanie kolumn potencjalny number telefonu, adres mailowy, adres fizyczny z tekstu
 - wyszukiwanie słów z danego tematu
@@ -131,6 +128,10 @@ między innymi:
 - liczność znaków niealfabetycznych w tekście
 
 'Dodatkowe kolumny jakie można dodać to liczba błędów ortograficznych, informacje o nicku autora' - nie używamy z powodu podejścia do tuningowania zbioru. 
+
+
+### model_research.ipynb
+Stworzono tu alternatywne podejście używające klastrowania, nie wykorzystaliśmy go finalnie, ale zostawiamy poglądowo kod.
 
 ### Models.ipynb
 Trenujemy model, zapisujemy go, tworzymy finalne csv z wyscrappowanych danych do zapisu - gotowe do robienia z nich raportów oraz otrzymujemy listę użytkowników z potencjalnymi fałszywymi ogłoszeniami.
@@ -153,7 +154,7 @@ Wykrywamy użytkowników z ogłoszeniem uznanym ponad danego thresholdu jako fa�
 /FakeJobHunter_Dashboard/suspicious_users/fake_users.csv oraz mamy możliwość zapisania tego profilu do pliku w formacie html jako dowód (nie jest to podłączone do django, ale mamy zaimplementowane funkcje, które wywołaliśmy z poziomu notebooka).
 
 ## Django
-Możliwości (TODO)
+Django zostało zaprezentowane wizualnie za pomocą nagrania, które dodaliśmy do platformy. Przetrzymujemy tam skrypty do potrzebnych funkcji, mamy baze danych z ogłoszeniami. Można rozwinąć o dodatkowe wykresy w oparciu o stworzoną tam bazę danych.
 
 ## Requirements
 Pakiety, których używaliśmy znajdują się w pliku *requirements.txt*.
