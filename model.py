@@ -1,4 +1,7 @@
-# TODO imports
+from sklearn.ensemble import IsolationForest
+import pickle
+import shap
+
 def load_models(isolation_forest_path='isolation_forest_model.pkl', pickle_file_path='exp.pickle'):
     with open(isolation_forest_path, 'rb') as file:
         iso_forest = pickle.load(file)
