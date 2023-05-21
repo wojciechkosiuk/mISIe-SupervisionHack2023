@@ -12,6 +12,9 @@ import re
 import pickle
 import numba
 import cloudpickle
+from django.http import HttpResponse
+from copy import deepcopy
+import random
 
 # Add the parent directory to the Python path
 
@@ -35,6 +38,16 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 import copy
 from sklearn.feature_extraction.text import CountVectorizer
+import datetime
+
+def export_csv(request,df):
+
+    csv_data = df.to_csv(index=False)
+
+    response = HttpResponse(csv_data, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=data.csv'
+
+    return response
 
 def create_random(link):
     job_offer = JobOffer(
@@ -66,6 +79,7 @@ def create_random(link):
     return job_offer
 
 def job_offer_analysis(request):
+    df_all= pd.DataFrame({})
     if request.method == 'POST':
 
         if 'risk' in request.POST:
@@ -74,13 +88,22 @@ def job_offer_analysis(request):
             risk_value = request.POST['risk']
             link = request.POST['link']
 
+            df_all['risk_value'] = risk_value
+
 
             job_offer = JobOffer.objects.get(link=link)
             job_offer.risk_value = risk_value
             job_offer.save()
             context = {
                 'job_offer_info': job_offer,
+                'predict_flag_value': job_offer.Predict_Flag
+
             }
+            #print(df_all.columns)
+            randint = random.randint(1, 1e9)
+            name = str(datetime.datetime.now())[:10] + " " +str(randint)
+            
+            df_all.to_csv(f"{name}.csv")
             return render(request, 'job_offer_analysis.html', context)
 
         else:
@@ -105,6 +128,10 @@ def job_offer_analysis(request):
                 #print(df_scraped)
 
                 df = create_final_dataframe(df_scraped)
+                df_all = copy.deepcopy(df)
+                randint = random.randint(1, 1e9)
+                name = str(datetime.datetime.now())[:10] + " " +str(randint)
+                df_all.to_csv(f"{name}.csv")
 
                 ROW = predict_and_get_cols(df,'model/iso_model.pkl')
                 #print(len(ROW.columns))
@@ -116,8 +143,10 @@ def job_offer_analysis(request):
                     context = {
                         'message': 'This link is already in the database!',
                         'job_offer_info': job_offer_info,
-                        'correct_link': True
+                        'correct_link': True,
+                        'predict_flag_value': job_offer_info.Predict_Flag
                     }
+                    #print(job_offer_info.Predict_Flag, "Xdxdxxdxdxddx")
 
                 # Perform web scraping and job offer analysis
                 # Retrieve the relevant information for the job offer from the analysis
@@ -208,23 +237,25 @@ def job_offer_analysis(request):
 
                     job_offer.save()
 
-
-                    # job_offer = create_random(link=link)
-                    # job_offer.save()
                     # Retrieve the job offer information from the database
                     job_offer_info = JobOffer.objects.get(link=link)
 
                     # Pass the job offer information to the template
                     context = {
                         'job_offer_info': job_offer_info,
-                        'correct_link': True
+                        'correct_link': True,
+                        'predict_flag_value': Predict_Flag
                     }
+                    #print(Predict_Flag, "xdxdxdxdxxdxd")
+                    #print('aha nie wnikkam')
                 return render(request, 'job_offer_analysis.html', context)
             
             else:
 
                 context = {
-                    'not_required_pages': 'olx or sprzedajemy domain required!'
+                    'not_required_pages': 'olx or sprzedajemy domain required!',
+                   
+
                 }
 
         return render(request, 'job_offer_analysis.html',context)

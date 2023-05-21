@@ -92,7 +92,7 @@ class JobOffer(models.Model):
     Typ_umowy = models.CharField(max_length=200,null=True)
     user_profile_link_hash = models.CharField(max_length=200,null=True)
     Predict_Flag = models.IntegerField(null=True)
-    Predict_Prob = models.IntegerField(null=True)
+    Predict_Prob = models.FloatField(null=True)
     Explain = models.TextField(null=True)
     risk_value = models.IntegerField(null=True, blank=True)
 

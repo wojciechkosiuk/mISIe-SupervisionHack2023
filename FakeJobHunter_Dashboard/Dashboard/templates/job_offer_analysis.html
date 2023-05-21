@@ -49,13 +49,17 @@
     <h2>Information</h2>
         <div class="container">
             {% if job_offer_info %}
-            <div class="box text">
-                <h3>Description</h3>
-                <p>{{ job_offer_info.description }}</p>
+            <div class="box probability" style="background-color: {% if predict_flag_value == 1 %}#5de57b{% else %}#ef5c4c{% endif %};">
+                <h3>Predict Flag</h3>
+                <p>{{ job_offer_info.Predict_Flag }}</p>
             </div>
-            <div class="box text">
-                <h3>Preprocessed Description</h3>
-                <p>{{ job_offer_info.preprocessed_description }}</p>
+            <div class="box probability">
+                <h3>Predict Probability</h3>
+                <p>{{ job_offer_info.Predict_Prob }}</p>
+            </div>
+            <div class="box probability">
+                <h3>Risk Value</h3>
+                <p>{{ job_offer_info.risk_value }}</p>
             </div>
             <div class="box">
                 <h3>TF-IDF Sum</h3>
@@ -97,21 +101,9 @@
                 <h3>Capital Words Count</h3>
                 <p>{{ job_offer_info.capital_words_count }}</p>
             </div>
-            <div class="box text">
-                <h3>Possible Email</h3>
-                <p>{{ job_offer_info.possible_email }}</p>
-            </div>
-            <div class="box text">
-                <h3>Possible Address</h3>
-                <p>{{ job_offer_info.possible_address }}</p>
-            </div>
             <div class="box">
                 <h3>Non Polish Character Count</h3>
                 <p>{{ job_offer_info.non_polish_char_count }}</p>
-            </div>
-            <div class="box text">
-                <h3>Possible Phone Numbers</h3>
-                <p>{{ job_offer_info.possible_phone_numbers }}</p>
             </div>
             <div class="box">
                 <h3>Personal Info Keywords Count</h3>
@@ -125,33 +117,9 @@
                 <h3>Money Related Keywords Count</h3>
                 <p>{{ job_offer_info.money_related_keywords_count }}</p>
             </div>
-            <div class="box text">
-                <h3>Link</h3>
-                <p>{{ job_offer_info.link }}</p>
-            </div>
             <div class="box">
-                <h3>Dodane Data</h3>
+                <h3>Date</h3>
                 <p>{{ job_offer_info.dodane_data }}</p>
-            </div>
-            <div class="box">
-                <h3>ID</h3>
-                <p>{{ job_offer_info.link_id }}</p>
-            </div>
-            <div class="box text">
-                <h3>Title</h3>
-                <p>{{ job_offer_info.title }}</p>
-            </div>
-            <div class="box text">
-                <h3>Category Tree Item</h3>
-                <p>{{ job_offer_info.category_tree_item }}</p>
-            </div>
-            <div class="box text">
-                <h3>User Profile Link</h3>
-                <p>{{ job_offer_info.user_profile_link }}</p>
-            </div>
-            <div class="box text">
-                <h3>Filters</h3>
-                <p>{{ job_offer_info.filters }}</p>
             </div>
             <div class="box">
                 <h3>Pay Low</h3>
@@ -170,6 +138,46 @@
                 <p>{{ job_offer_info.pay_period }}</p>
             </div>
             <div class="box text">
+                <h3>Description</h3>
+                <p>{{ job_offer_info.description }}</p>
+            </div>
+            <div class="box text">
+                <h3>Preprocessed Description</h3>
+                <p>{{ job_offer_info.preprocessed_description }}</p>
+            </div>
+            <div class="box text">
+                <h3>Possible Email</h3>
+                <p>{{ job_offer_info.possible_email }}</p>
+            </div>
+            <div class="box text">
+                <h3>Possible Address</h3>
+                <p>{{ job_offer_info.possible_address }}</p>
+            </div>
+            <div class="box text">
+                <h3>Possible Phone Numbers</h3>
+                <p>{{ job_offer_info.possible_phone_numbers }}</p>
+            </div>
+            <div class="box text">
+                <h3>Link</h3>
+                <p>{{ job_offer_info.link }}</p>
+            </div>
+            <div class="box text">
+                <h3>Title</h3>
+                <p>{{ job_offer_info.title }}</p>
+            </div>
+            <div class="box text">
+                <h3>Category Tree Item</h3>
+                <p>{{ job_offer_info.category_tree_item }}</p>
+            </div>
+            <div class="box text">
+                <h3>User Profile Link</h3>
+                <p>{{ job_offer_info.user_profile_link }}</p>
+            </div>
+            <div class="box text">
+                <h3>Filters</h3>
+                <p>{{ job_offer_info.filters }}</p>
+            </div>
+            <div class="box text">
                 <h3>Lokalizacja</h3>
                 <p>{{ job_offer_info.Lokalizacja }}</p>
             </div>
@@ -180,18 +188,6 @@
             <div class="box text">
                 <h3>Typ Umowy</h3>
                 <p>{{ job_offer_info.Typ_umowy }}</p>
-            </div>
-            <div class="box">
-                <h3>User Profile Link Hash</h3>
-                <p>{{ job_offer_info.user_profile_link_hash }}</p>
-            </div>
-            <div class="box probability">
-                <h3>Predict Flag</h3>
-                <p>{{ job_offer_info.Predict_Flag }}</p>
-            </div>
-            <div class="box probability">
-                <h3>Predict Probability</h3>
-                <p>{{ job_offer_info.Predict_Prob }}</p>
             </div>
             <div class="box text">
                 <h3>Explain</h3>
