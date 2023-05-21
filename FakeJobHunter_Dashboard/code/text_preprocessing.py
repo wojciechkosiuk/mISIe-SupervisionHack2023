@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 import copy
 from sklearn.feature_extraction.text import CountVectorizer
+import re
 
 stemmer = StempelStemmer.polimorf()
 
@@ -192,7 +193,7 @@ def process_single_row(single_posting_desc):
 
 def create_final_dataframe(df):
 
-    df = pd.read_csv(df)
+    #df = pd.read_csv(df)
     other_cols = df.drop(columns=['description'])
     opisy = preprocess_text(df['description'].replace('\n', '').replace('\r', ''), stopwords, stemmer)
     opisy_full = []

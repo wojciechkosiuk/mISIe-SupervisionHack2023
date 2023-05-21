@@ -5,12 +5,36 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from django.http import HttpResponse
+import sys
+sys.path.append('..')
+import os
+import re
+import pickle
+import numba
+import cloudpickle
+
+# Add the parent directory to the Python path
+
+print(sys.path)
+from code.sprzedajemy_functions import *
+from code.olx_functions import *
+from code.scrape_functions import *
+from code.text_preprocessing import *
+from code.model import *
 import base64
 import plotly.graph_objects as go
 from django.shortcuts import render
 import random
 import string
-
+import pandas as pd
+import numpy as np
+import pandas as pd
+from stempel import StempelStemmer
+import nltk
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+import copy
+from sklearn.feature_extraction.text import CountVectorizer
 
 def create_random(link):
     job_offer = JobOffer(
@@ -65,7 +89,24 @@ def job_offer_analysis(request):
 
             if 'olx' in link or 'sprzedajemy' in link:
 
+                df_olx = None
+                df_sprzedajemy = None
+                df_scraped = None
                 # TU WEB SCRAPING Z ZAPISEM DO SYSTEMU
+                if 'olx' in link:
+                    df_olx = get_info_about_job_olx(url=link)
+                    df_olx = adjust_olx_df(df_olx)
+                    df_scraped = df_olx
+                else:
+                    df_sprzedajemy = get_info_about_job_sprzedajemy(url=link)
+                    df_sprzedajemy = adjust_sprzedajemy_df(df_sprzedajemy)
+                    df_scraped = df_sprzedajemy
+                
+                #print(df_scraped)
+
+                df = create_final_dataframe(df_scraped)
+                ROW = predict_and_get_cols(df,'model/iso_model.pkl')
+                print(ROW)
 
                 job_offer = JobOffer.objects.filter(link=link).first()
                 if job_offer:
