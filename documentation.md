@@ -55,54 +55,58 @@ Przykładowe dane otrzymane z webscrapingu z obu stron znajdują się odpowiedni
 ### *scraping_functions.py*
 Dokumentacja funkcji:
 
--  `return_soup(url)` służy do pobrania zawartości HTML ze wskazanego URL i przeparsowania jej za pomocą BeautifulSoup. Zwraca obiekt BeautifulSoup:
-    - argumenty:
-        - `url` (str): Adres URL strony do pobrania.
-    - zwraca:
-        - `BeautifulSoup`: Obiekt BeautifulSoup zawierający sparsowaną zawartość HTML.
+`return_soup(url)` służy do pobrania zawartości HTML ze wskazanego URL i przeparsowania jej za pomocą BeautifulSoup. Zwraca obiekt BeautifulSoup:
+- argumenty:
+    - `url (str)`: Adres URL strony do pobrania.
+- zwraca:
+    - `BeautifulSoup`: Obiekt BeautifulSoup zawierający sparsowaną zawartość HTML.
 
-- `save_url_to_html(url, filename)` służy do zapisania zawartości HTML strony internetowej do pliku o rozszerzeniu html. Plik można nastpępnie otworzyć w przeglądarce w takiej samej formie w jakiej został pobrany.
+`save_url_to_html(url, filename)` służy do zapisania zawartości HTML strony internetowej do pliku o rozszerzeniu html. Plik można nastpępnie otworzyć w przeglądarce w takiej samej formie w jakiej został pobrany.
 
-    - argumenty:
-        - `url` (str): Adres URL strony do zapisania.
-        - `filename` (str): Nazwa pliku, do którego ma być zapisana zawartość HTML. Do nazwy pliku dodawany jest prefix z datą stworzenia zapisu. Plik zapisywany jest w folderze htmls. 
+- argumenty:
+    - `url (str)`: Adres URL strony do zapisania.
+    - `filename` (str): Nazwa pliku, do którego ma być zapisana zawartość HTML. Do nazwy pliku dodawany jest prefix z datą stworzenia zapisu. Plik zapisywany jest w folderze htmls. 
 
 ### *olx_functions.py*
 Dokumentacja funkcji:
 
 
-- `get_info_about_job_olx(url)` pobiera informacje o ofercie pracy z witryny OLX. Poniżej znajduje się opis poszczególnych elementów kodu.
+`get_info_about_job_olx(url)` pobiera informacje o ofercie pracy z witryny OLX. Funkcja znajduje po tagach CSS interesujące nas fragmenty strony. Każde wyszukanie jest zawarte w bloku `try-except`.
 
 - argumenty:
-    - `url` (str) - adres URL strony z ofertą pracy na OLX.
+    - `url (str)` - adres URL strony z ofertą pracy na OLX.
 - zwracane:
-    - `pandas.DataFrame` - Ramka danych zawierająca informacje o ofercie pracy z processingiem. 
+    - `pandas.DataFrame` - Ramka danych zawierająca surowe informacje o ofercie pracy.
+
+
+`adjust_olx_df(df)` służy do dostosowania ramki otrzymanej z funkcji `get_info_about_job_olx(url).
+
+- argumenty:
+    - df (pandas.DataFrame) - ramka danych otrzymana z funkcji `get_info_about_job_olx(url)`
+- zwracane:
+    - pandas.DataFrame - Dostosowana ramka danych zawierająca informacje o ofertach pracy, którą można wykorzystać do dalszej analizy. 
+
+Towarzyszą jej funkcje pomocnicze:
+
+- `remove_dodane(str: x)` - usuwająca przedrostek "Dodane " z daty
+- `convert_to_datetime(str: x)` - zamieniająca datę na objekt `datetime`
+- `remove_id(str: x)` - usuwająca przedrostek "ID:" z id ogłoszenia
+- `remove_opis(str: x)` - usuwająca przedrostek "OPIS: " z opisu ogłoszenia
+- `add_olx(str: x)` - dodająca przedrostek domeny olx do reszty linku, który jest niepełny
+- `replace_commas(str: x)` - zamieniająca "," na "."
+- `convert_str_to_float(str: x)` - zamieniająca zarobki na floaty jeśli są w formie ułamka
+
+
+`scrape_olx_links()` służy do pobierania linków ofert pracy z witryny OLX. Zapisuje je w niepełnej formie (bez przedrostka domeny olx) w pliku *linki_olx*.txt.
+
+### *sprzedajemy_functions.py*
+Ogólnie podobne funkcje jak w przypadku OLX. Jest też podobne nazewnictwo. Do uzupełnienia.....
 
 
 
-Argumenty funkcji:
-url (str): Adres URL strony z ofertą pracy na OLX.
-Zwracane wartości:
-dejtafrejm (pandas.DataFrame): Ramka danych zawierająca informacje o ofercie pracy.
-Opis działania funkcji:
-Funkcja rozpoczyna od wywołania funkcji return_soup(url), która pobiera zawartość strony i tworzy obiekt BeautifulSoup z przeparsowanym HTML-em.
-
-Tworzony jest słownik dict_, który będzie przechowywał informacje o ofercie pracy.
-
-Pętla for iteruje przez elementy słowników spans, h1s, lis, a_s i divs, a następnie pobiera odpowiednie dane ze strony OLX i przypisuje je do odpowiednich kluczy w słowniku dict_. Jeśli dany element nie zostanie znaleziony na stronie, przypisywana jest wartość None.
-
-Blok try-except odpowiada za pobranie informacji dotyczących wynagrodzenia. Jeśli dane są dostępne na stronie, są one przetwarzane i zapisywane w odpowiednich kluczach słownika dict_.
-
-Blok try-except odpowiada za pobranie dodatkowych opisów i informacji związanych z ofertą pracy. Jeśli dane są dostępne na stronie, są one przetwarzane i zapisywane w odpowiednich kluczach słownika dict_.
-
-Tworzony jest obiekt DataFrame za pomocą biblioteki pandas, dejtafrejm, który jest wypełniany danymi z słownika dict_.
-
-Obiekt DataFrame dejtafrejm jest zwracany jako wynik funkcji.
-
-Wynik funkcji get_info_about_job_olx(url) zawiera informacje o ofercie pracy w formie DataFrame, który można wykorzystać do dalszej analizy i przetwarzania danych.
 
 
-
+    
 
 ## Requirements
 Pakiety, których używaliśmy znajdują się w pliku *requirements.txt*.
