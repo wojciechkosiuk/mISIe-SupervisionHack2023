@@ -1,8 +1,8 @@
 
-## Spis treści:
--web scraping (informacje, co uzyskujemy)
--model (dlaczego taki, jak działa, wyjaśnienia)
--strona użytkownika - django
+Spis treści:
+ -web scraping (informacje, co uzyskujemy)
+ -model (dlaczego taki, jak działa, wyjaśnienia)
+ -strona użytkownika - django
 
 ## Web scraping
 Szukaliśmy danych dotyczących ogłoszeń o pracę na dwóch portalach:
@@ -128,14 +128,32 @@ między innymi:
 - uzyskiwanie kolumn potencjalny number telefonu, adres mailowy, adres fizyczny z tekstu
 - wyszukiwanie słów z danego tematu
 - kolumny określające stylistyczny i fizyczny format tekstu
+- liczność znaków niealfabetycznych w tekście
 
-
+'Dodatkowe kolumny jakie można dodać to liczba błędów ortograficznych, informacje o nicku autora' - nie używamy z powodu podejścia do tuningowania zbioru. 
 
 ### Models.ipynb
-**WYJAŚNIENIE PODEJŚCIA** - Zastosowaliśmy Anomaly Detection, model Isolation Forest po tuningu parametrów. Używamy takiego podejścia, ponieważ jest skuteczny w podejściach fraud detection. Z powodu braku datasetu z labelami uczenie przeprowadziliśmy w taki sposób. Dane tekstowe od organizatorów miały informacje czy są fałszywe czy nie, więc dołączyliśmy je do wyscrappowanych przez nas danych. Mogliśmy tak zrobić, ponieważ używamy tylko tekstu ogłoszenia do tworzenia kolumn do modelu. Trenowaliśmy Isolation Forest ustawiając  
 Trenujemy model, zapisujemy go, tworzymy finalne csv z wyscrappowanych danych do zapisu - gotowe do robienia z nich raportów oraz otrzymujemy listę użytkowników z potencjalnymi fałszywymi ogłoszeniami.
+**WYJAŚNIENIE PODEJŚCIA** - Zastosowaliśmy Anomaly Detection, model Isolation Forest po tuningu parametrów. Używamy takiego podejścia, ponieważ jest skuteczny w podejściach fraud detection. Z powodu braku datasetu z labelami uczenie przeprowadziliśmy w taki sposób. Dane tekstowe od organizatorów miały informacje czy są fałszywe czy nie, więc dołączyliśmy je do wyscrappowanych przez nas danych. Mogliśmy tak zrobić, ponieważ używamy tylko tekstu ogłoszenia do tworzenia kolumn do modelu. Trenowaliśmy Isolation Forest ustawiając parametry tak aby zmaksymalizować liczbę wykrytych reklam z datasetu z labelami od organizatorów, jednocześnie minimalizując liczbę wykrytych jako potencjalne reklamy z danych gdzie label wskazywał o prawdziwości ogłoszenia.
+Otrzymaliśmy 15/24 wykryte reklamy ze wszystkich oraz 1/13 wykrytą reklamę ze zbioru prawdziwych. **Te statystyki służyły tylko do odpowiedniego tuningu isoforest, nie do ewaluacji. ** Ustawiając parametr contamination=0.033 gwarantujemy że przy trenowaniu naszych plików otrzymujemy 3.3% zaklasyfikowanych jako outliery - u nas fakejob. 
+**Testy**
+Testując otrzymaliśmy około 3% zakwalifikowania ze zbioru jako potencjalne fałszywe oferty (66 ofert).  Z nich sprawdziliśmy ręcznie ich tekst klasyfikując czy faktycznie są fałszywe. Z naszych 66 wykrytych uznajemy, że 75% z błędem statystycznym 5% zostało wykrytych fałszywych ofert. 
 
-    
+**Ulepszenie**
+Dodanie o labelowanych danych motywujemy tym, że musieliśmy dodać fałszywe oferty aby być pewnym że są tam takowe. Przy lepszym, większym zbiorze, np z naszych wyscrapowanych danych (zostało tam utowrzonych wiele kolumn, z których nie skorzystaliśmy) jest możliwe otrzymanie pewniejszych wyników.
+
+**Wyjaśnialność**
+Dodaliśmy wyjaśnialność do naszego modelu poprzez użycie Shap for Forest, dzięki temu tworzyła się wizualizacja dla konkretnej obserwacji (oferty) i otrzymaliśmy z tego metrykę służącą jako wychylenie od standardowej obserwacji (uzyskanie z shap_values). Potrzebne było przeskalowanie tych wartości aby otrzymać z tego prawdopodobieństwo.
+
+Z wyjaśnialności shapa, czyli wpływu konkretnej kolumny na decyzje wygenerowaliśmy komunikat tłumaczący model, więc ekspert działający na stronie dostaje prawdopodobieństwo modelu oraz tłumaczenie dlaczego ma ono konkretną wartość. Uważamy, że łatwy dostęp do wyjaśnialności, pomoże określić ekspertowi poprzez zwrócenie jego uwagi na pewne aspekty.
+
+**Dodatkowe kolumny**
+Otrzymujemy kolumny o potencjalnym adresie fizycznym, adresie email, telefonie z ogłoszenia
+Wykrywamy użytkowników z ogłoszeniem uznanym ponad danego thresholdu jako fałszywe i zapisujemy je jako BlackList  w:
+/FakeJobHunter_Dashboard/suspicious_users/fake_users.csv oraz mamy możliwość zapisania tego profilu do pliku w formacie html jako dowód (nie jest to podłączone do django, ale mamy zaimplementowane funkcje, które wywołaliśmy z poziomu notebooka).
+
+## Django
+Możliwości (TODO)
 
 ## Requirements
 Pakiety, których używaliśmy znajdują się w pliku *requirements.txt*.
