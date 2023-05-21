@@ -4,6 +4,7 @@
 <head>
     <title>Overall Analysis</title>
 </head>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <link rel="stylesheet" href="{% static 'Dashboard/style.css' %}">
 <menu>
     <div class="custom-logo-container">
@@ -15,14 +16,28 @@
 </menu>
 <body>
     <h1>Overall Analysis</h1>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!-- Display your generated plots here -->
-    {% for plot in plot_data %}
-        {{ plot }}
-        <br>
-    {% endfor %}
-    <div id="plot-div">
+
+    {% csrf_token %}
+    <form method="GET" action="{% url 'Dashboard:overall_analysis' %}">
+        <input type="text" name="search_link" placeholder="Enter Job Offer Link">
+        <button type="submit">Search</button>
+
+    </form>
+
+    <!-- <div class="form-container">
+        <form method="post" class="submit-form">
+            {% csrf_token %}
+            <label for="link">Enter job offer link:</label>
+            <div class="input-container">
+                <input type="url" name="link2" id="link2" required>
+                <input type="submit" value="Submit" class="submit-button">
+            </div>
+        </form>
+    </div> -->
+    
+    <div id="plot-container">
         {{ plot_html|safe }}
     </div>
+
 </body>
 </html>

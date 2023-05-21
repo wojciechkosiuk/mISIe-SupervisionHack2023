@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import overall_analysis
 
 app_name = 'Dashboard'
 

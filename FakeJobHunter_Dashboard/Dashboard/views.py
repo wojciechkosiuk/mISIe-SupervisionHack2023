@@ -15,10 +15,8 @@ import cloudpickle
 from django.http import HttpResponse
 from copy import deepcopy
 import random
-
-# Add the parent directory to the Python path
-
-print(sys.path)
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from code.sprzedajemy_functions import *
 from code.olx_functions import *
 from code.scrape_functions import *
@@ -275,19 +273,44 @@ def prepare_plot_data(job_offers):
 
     return plot_data
 
+from django.shortcuts import get_object_or_404
+
 def overall_analysis(request):
+    # Retrieve all job offers
     job_offers = JobOffer.objects.all()
 
     # Prepare data for plotting
-    plot_data = prepare_plot_data(job_offers)
+    x_values = []
+    y_values = []
 
-    # Generate the Plotly figure
-    fig = go.Figure(data=go.Scatter(x=list(range(len(plot_data))), y=plot_data))
+    # Iterate over job offers and collect Predict_Prob values
+    for job_offer in job_offers:
+        x_values.append(job_offer.id)
+        y_values.append(job_offer.Predict_Prob)
+
+    # Generate the Plotly figure (Box plot)
+    fig = go.Figure(data=go.Box(y=y_values))
     fig.update_layout(
         xaxis_title='Job Offer Index',
-        yaxis_title='Uppercase Counter Value',
-        title='Uppercase Counter Value Trend'
+        yaxis_title='Predict_Prob',
+        title='Predict_Prob Box Plot'
     )
+
+    # Get the link from the search bar
+    search_link = request.GET.get('search_link')
+
+    if search_link:
+        # Check if the link exists in the database
+        selected_job_offer = get_object_or_404(JobOffer, link=search_link)
+
+        # Add a red dot on the plot for the selected job offer
+        fig.add_trace(go.Scatter(
+            x=['trace 0'],
+            y=[selected_job_offer.Predict_Prob],
+            mode='markers',
+            name='Selected Job Offer',
+            marker=dict(color='red', size=10)
+        ))
 
     # Convert the Plotly figure to HTML
     plot_html = fig.to_html(full_html=False)
