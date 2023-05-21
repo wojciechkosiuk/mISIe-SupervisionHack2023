@@ -105,8 +105,9 @@ def job_offer_analysis(request):
                 #print(df_scraped)
 
                 df = create_final_dataframe(df_scraped)
+
                 ROW = predict_and_get_cols(df,'model/iso_model.pkl')
-                print(ROW)
+                #print(len(ROW.columns))
 
                 job_offer = JobOffer.objects.filter(link=link).first()
                 if job_offer:
@@ -123,8 +124,93 @@ def job_offer_analysis(request):
 
                 #Save the job offer information to the database
                 else:
-                    job_offer = create_random(link=link)
+
+                    description = ROW['description'].values[0]
+                    preprocessed_description = ROW['preprocessed_description'].values[0]
+                    #index = ROW['index'].values[0]
+                    tfidf_sum = ROW['tfidf_sum'].values[0]
+                    tfidf_mean = ROW['tfidf_mean'].values[0]
+                    emotions_sum = ROW['emotions_sum'].values[0]
+                    emotions_mean = ROW['emotions_mean'].values[0]
+                    text_length = ROW['text_length'].values[0]
+                    capital_letters_count = ROW['capital_letters_count'].values[0]
+                    numbers_count = ROW['numbers_count'].values[0]
+                    question_marks_count = ROW['question_marks_count'].values[0]
+                    currency_signs_count = ROW['currency_signs_count'].values[0]
+                    capital_words_count = ROW['capital_words_count'].values[0]
+                    possible_email = ROW['possible_email'].values[0]
+                    possible_address = ROW['possible_address'].values[0]
+                    non_polish_char_count = ROW['non_polish_char_count'].values[0]
+                    possible_phone_numbers = ROW['possible_phone_numbers'].values[0]
+                    personal_info_keywords_count = ROW['personal_info_keywords_count'].values[0]
+                    inspiring_keywords_count = ROW['inspiring_keywords_count'].values[0]
+                    money_related_keywords_count = ROW['money_related_keywords_count'].values[0]
+                    dodane_data = ROW['dodane-data'].values[0]
+                    link_id = ROW['id'].values[0]
+                    title = ROW['title'].values[0]
+                    category_tree_item = ROW['category-tree-item'].values[0]
+                    user_profile_link = ROW['user-profile-link'].values[0]
+                    filters = ROW['filters'].values[0]
+                    pay_low = ROW['pay_low'].values[0]
+                    pay_high = ROW['pay_high'].values[0]
+                    pay_currency = ROW['pay_currency'].values[0]
+                    pay_period = ROW['pay_period'].values[0]
+                    Lokalizacja = ROW['Lokalizacja'].values[0]
+                    Wymiar_pracy = ROW['Wymiar pracy'].values[0]
+                    Typ_umowy = ROW['Typ umowy'].values[0]
+                    user_profile_link_hash = ROW['user-profile-link-hash'].values[0]
+                    Predict_Flag = ROW['Predict_Flag'].values[0]
+                    Predict_Prob = ROW['Predict_Prob'].values[0]
+                    Explain = ROW['Explain'].values[0]
+
+                    # Create a new JobOffer object and save it to the database
+                    job_offer = JobOffer(
+                        link=link,
+                        description=description,
+                        preprocessed_description=preprocessed_description,
+                        #index=index,
+                        tfidf_sum=tfidf_sum,
+                        tfidf_mean=tfidf_mean,
+                        emotions_sum=emotions_sum,
+                        emotions_mean=emotions_mean,
+                        text_length=text_length,
+                        capital_letters_count=capital_letters_count,
+                        numbers_count=numbers_count,
+                        question_marks_count=question_marks_count,
+                        currency_signs_count=currency_signs_count,
+                        capital_words_count=capital_words_count,
+                        possible_email=possible_email,
+                        possible_address=possible_address,
+                        non_polish_char_count=non_polish_char_count,
+                        possible_phone_numbers=possible_phone_numbers,
+                        personal_info_keywords_count=personal_info_keywords_count,
+                        inspiring_keywords_count=inspiring_keywords_count,
+                        money_related_keywords_count=money_related_keywords_count,
+                        dodane_data=dodane_data,
+                        link_id=link_id,
+                        title=title,
+                        category_tree_item=category_tree_item,
+                        user_profile_link=user_profile_link,
+                        filters=filters,
+                        pay_low=pay_low,
+                        pay_high=pay_high,
+                        pay_currency=pay_currency,
+                        pay_period=pay_period,
+                        Lokalizacja=Lokalizacja,
+                        Wymiar_pracy=Wymiar_pracy,
+                        Typ_umowy=Typ_umowy,
+                        user_profile_link_hash=user_profile_link_hash,
+                        Predict_Flag=Predict_Flag,
+                        Predict_Prob=Predict_Prob,
+                        Explain=Explain,
+                        risk_value=None
+                    )
+
                     job_offer.save()
+
+
+                    # job_offer = create_random(link=link)
+                    # job_offer.save()
                     # Retrieve the job offer information from the database
                     job_offer_info = JobOffer.objects.get(link=link)
 
