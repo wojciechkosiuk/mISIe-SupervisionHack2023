@@ -36,7 +36,7 @@
     
     {% if correct_link %}
         <h2>Risk Value</h2>
-        <form method="post">
+        <form method="post" class="submit-form">
             {% csrf_token %}
             <input type="hidden" name="link" value="{{ job_offer_info.link }}">
             <label for="risk">Risk value (1-5):</label>

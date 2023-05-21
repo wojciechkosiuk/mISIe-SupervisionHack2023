@@ -4,7 +4,7 @@ import time
 import datetime
 import pandas as pd
 import numpy as np
-from scrape_functions import *
+from code.scrape_functions import *
 
 
 categories = {"administracja-biurowa",
